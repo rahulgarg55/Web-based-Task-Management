@@ -1,16 +1,3 @@
-/**
- * TaskForm Component
- *
- * This component is used for creating and editing tasks. It provides a form for users to input
- * task details, including title, description, due date, and completion status. Users can submit
- * the form to create or update a task.
- *
- * @param {Function} onSubmit - A function to handle form submission (create/update task).
- * @param {Object} task - The task to be edited (optional). If provided, the form will be pre-filled with task details.
- *
- * @returns {JSX.Element} The TaskForm component.
- */
-
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';
@@ -49,7 +36,7 @@ const TaskForm = ({ onSubmit, task }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert the dueDate to the "dd-mm-yyyy" format expected by your backend
+    // Convert the dueDate to the "dd-mm-yyyy" format expected by our backend
     const formattedDueDate = `${formData.dueDate.slice(8, 10)}-${formData.dueDate.slice(5, 7)}-${formData.dueDate.slice(0, 4)}`;
 
     const formattedData = {
@@ -69,10 +56,10 @@ const TaskForm = ({ onSubmit, task }) => {
     <Container maxWidth="md">
       <Paper elevation={3}>
         <Typography variant="h5" align="center" gutterBottom>
-          Create Task
+          {task ? 'Edit Task' : 'Create Task'}
         </Typography>
         <form onSubmit={handleSubmit}>
-          {/* Your form fields */}
+          {/* Form fields for title, description, due date, and completion status */}
           <TextField
             name="title"
             label="Title"
@@ -81,7 +68,6 @@ const TaskForm = ({ onSubmit, task }) => {
             onChange={handleChange}
             required
             sx={{ marginBottom: '1rem' }}
-
           />
           <TextField
             name="description"
@@ -92,34 +78,32 @@ const TaskForm = ({ onSubmit, task }) => {
             onChange={handleChange}
             required
             sx={{ marginBottom: '1rem' }}
-
           />
-         <TextField
-  name="dueDate"
-  label="Due Date"
-  fullWidth
-  type="date"
-  value={formData.dueDate}
-  onChange={handleChange}
-  inputProps={{
-    min: new Date().toISOString().split('T')[0], // Set minimum date to today
-  }}
-  InputLabelProps={{
-    shrink: true, // This ensures that the label remains visible when a date is selected
-  }}
-  placeholder="" // Set the placeholder to an empty string to remove it
-  required
-  sx={{ marginBottom: '1rem' }}
-
-/>
+          <TextField
+            name="dueDate"
+            label="Due Date"
+            fullWidth
+            type="date"
+            value={formData.dueDate}
+            onChange={handleChange}
+            inputProps={{
+              min: new Date().toISOString().split('T')[0], // Set minimum date to today
+            }}
+            InputLabelProps={{
+              shrink: true, // This ensures that the label remains visible when a date is selected
+            }}
+            placeholder="" 
+            required
+            sx={{ marginBottom: '1rem' }}
+          />
 
           <FormControlLabel
             control={<Checkbox name="status" checked={formData.status} onChange={handleChange} />}
-            label="Completed"    sx={{ marginLeft: '1rem' }}  
-
+            label="Completed"
+            sx={{ marginLeft: '1rem' }}
           />
-          <Button type="submit" variant="contained" color="primary"> 
-            Create
+          <Button type="submit" variant="contained" color="primary">
+            {task ? 'Update' : 'Create'}
           </Button>
         </form>
       </Paper>

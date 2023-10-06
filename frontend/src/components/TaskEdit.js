@@ -1,7 +1,3 @@
-// This component is used for editing task details. It allows users to update the title, description,
-//  * due date, and completion status of a task. Users can submit the form to update the task, and
-//  * a success or error message will be displayed using SweetAlert2.
-
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +6,7 @@ import Swal from 'sweetalert2';
 const TaskEdit = ({ task, onUpdate }) => {
   const history = useHistory();
 
+  // Initialize the form data with default values
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -18,6 +15,7 @@ const TaskEdit = ({ task, onUpdate }) => {
   });
 
   useEffect(() => {
+    // Populate the form data with task details when 'task' prop changes
     if (task) {
       const backendDate = new Date(task.dueDate);
       const formattedDate = `${backendDate.getFullYear()}-${(backendDate.getMonth() + 1)
@@ -34,6 +32,7 @@ const TaskEdit = ({ task, onUpdate }) => {
   }, [task]);
 
   const handleChange = (e) => {
+    // Update the form data based on user input
     const { name, value, type, checked } = e.target;
     setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
@@ -44,21 +43,23 @@ const TaskEdit = ({ task, onUpdate }) => {
         const taskId = task._id;
         history.push('/');
         await onUpdate(taskId, formData);
+        
+        // Display a success message using SweetAlert2
         Swal.fire({
           icon: 'success',
           title: 'Task Updated',
           text: 'The task has been updated successfully.',
         });
-      
       }
     } catch (error) {
       console.error('Error updating task:', error);
+
+      // Display an error message using SweetAlert2
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'An error occurred while updating the task.',
       });
-  
     }
   };
 
@@ -69,6 +70,7 @@ const TaskEdit = ({ task, onUpdate }) => {
           Edit Task
         </Typography>
         <form onSubmit={handleUpdate}>
+          {/* Form fields for title, description, due date, and completion status */}
           <TextField
             name="title"
             label="Title"
@@ -100,12 +102,13 @@ const TaskEdit = ({ task, onUpdate }) => {
             }}
             required
             sx={{ marginBottom: '1rem' }}
-
           />
           <FormControlLabel
             control={<Checkbox name="status" checked={formData.status} onChange={handleChange} />}
-            label="Completed"  sx={{ marginLeft: '1rem' }}  
+            label="Completed"
+            sx={{ marginLeft: '1rem' }}
           />
+          {/* Submit button */}
           <Button type="submit" variant="contained" color="primary">
             Update
           </Button>

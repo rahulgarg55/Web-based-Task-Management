@@ -1,22 +1,7 @@
-/*
-  Task Controller
-
-  This file contains controllers for handling tasks, including creation, updating, deletion,
-  retrieval by ID, and retrieval of all tasks. It also includes a utility function for
-  formatting date strings.
-
-  Controllers:
-  - createTask: Create a new task.
-  - updateTaskById: Update a task by its ID.
-  - deleteTaskById: Delete a task by its ID.
-  - getTaskById: Retrieve a task by its ID.
-  - getAllTasks: Retrieve all tasks.
-
-*/
-
 const Task = require('../models/Task');
 const createError = require('http-errors');
 
+// Helper function to format date strings
 const formatDate = (dateString) => {
   try {
     const [day, month, year] = dateString.split('-');
@@ -27,10 +12,12 @@ const formatDate = (dateString) => {
   }
 };
 
-
+// Create a new task
 const createTask = async (req, res, next) => {
   try {
     console.log('Received request to create task:', req.body);
+    
+    // Check if required parameters exist in the request body
     if (!req.body.title || !req.body.description || !req.body.dueDate) {
       throw createError(400, 'Title, description, and dueDate are required');
     }
@@ -48,7 +35,6 @@ const createTask = async (req, res, next) => {
   }
 };
 
-
 // Update a task by ID
 const updateTaskById = async (req, res, next) => {
   try {
@@ -61,9 +47,7 @@ const updateTaskById = async (req, res, next) => {
     const updatedTask = await Task.findByIdAndUpdate(
       taskId,
       { ...req.body, status: req.body.status },
-      {
-        new: true,
-      }
+      { new: true }
     );
 
     if (!updatedTask) {
@@ -120,6 +104,7 @@ const getTaskById = async (req, res, next) => {
   }
 };
 
+// Get all tasks
 const getAllTasks = async (req, res, next) => {
   try {
     const tasks = await Task.find();
@@ -138,5 +123,5 @@ module.exports = {
   updateTaskById,
   deleteTaskById,
   getTaskById,
-  getAllTasks, 
+  getAllTasks,
 };

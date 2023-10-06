@@ -12,64 +12,60 @@ function App() {
   const [editingTask, setEditingTask] = useState(null);
   const history = useHistory();
 
-  // Fetch tasks from the server when the component mounts
   useEffect(() => {
-    axios.get('http://localhost:3000/tasks')
-      .then((response) => {
+    // Fetch tasks from the server when the component mounts
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/tasks');
         setTasks(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching tasks:', error);
-      });
+      }
+    };
+
+    fetchTasks();
   }, []);
 
   // Function to create a new task
-
   const handleCreateTask = async (newTask) => {
     try {
-      // Format the dueDate in the "dd-mm-yyyy" format
       const formattedDueDate = formatDate(newTask.dueDate);
       newTask.dueDate = formattedDueDate;
 
       const response = await axios.post('http://localhost:3000/tasks', newTask);
-      // Update the local state with the newly created task
       setTasks([...tasks, response.data]);
-      history.push('/'); // Redirect to the main page after task creation
+      history.push('/');
     } catch (error) {
       console.error('Error creating task:', error);
     }
   };
-  // Function to update an existing task
 
+  // Function to update an existing task
   const handleUpdateTask = async (taskId, updatedTask) => {
     try {
-      // Format the dueDate in the "dd-mm-yyyy" format
       const formattedDueDate = formatDate(updatedTask.dueDate);
       updatedTask.dueDate = formattedDueDate;
 
       const response = await axios.put(`http://localhost:3000/tasks/${taskId}`, updatedTask);
-      console.log('Before setting tasks and history push');
+      
       // Update the local state with the updated task
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task._id === response.data._id ? response.data : task))
+      );
 
-      setTasks((prevTasks) => {
-        return prevTasks.map((task) =>
-          task._id === response.data._id ? response.data : task
-        );
-      });
-      console.log('After setting tasks and history push');
-      setEditingTask(null); //clear the editing task
+      setEditingTask(null);
       history.push('/');
     } catch (error) {
       console.error('Error updating task:', error);
     }
   };
-  // Function to delete a task
 
+  // Function to delete a task
   const handleDeleteTask = async (taskId) => {
     try {
       await axios.delete(`http://localhost:3000/tasks/${taskId}`);
+      
       // Remove the deleted task from the local state
-
       const updatedTasks = tasks.filter((task) => task._id !== taskId);
       setTasks(updatedTasks);
     } catch (error) {
@@ -78,7 +74,6 @@ function App() {
   };
 
   // Function to format a date string to "dd-mm-yyyy" format
-
   const formatDate = (dateString) => {
     try {
       const [day, month, year] = dateString.split('-');

@@ -14,6 +14,8 @@
 */
 const express = require('express');
 const router = express.Router();
+const createError = require('http-errors');
+
 const {
     createTask,
     updateTaskById,
@@ -22,24 +24,20 @@ const {
     getAllTasks,
 } = require('../controllers/taskController');
 
-const createError = require('http-errors');
-
+// Error handling middleware
 router.use((err, req, res, next) => {
     if (err instanceof createError.HttpError) {
-        res.status(err.statusCode).json({ error: err.message });
-    } else {
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(err.statusCode).json({ error: err.message });
     }
+    res.status(500).json({ error: 'Internal Server Error' });
 });
 
+// routes
 router.post('/tasks', createTask);
-
 router.put('/tasks/:id', updateTaskById);
-
 router.delete('/tasks/:id', deleteTaskById);
-
 router.get('/tasks/:id', getTaskById);
-
 router.get('/tasks', getAllTasks);
 
 module.exports = router;
+

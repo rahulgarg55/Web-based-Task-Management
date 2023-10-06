@@ -1,43 +1,40 @@
-/*
-
-  This is the main file for the Task Manager API built with Express.js and MongoDB.
-  It includes configuration for MongoDB connection, middleware setup, and route handling.
-
-*/
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const app = express();
-const cors = require('cors'); 
+const cors = require('cors');
 const taskRoutes = require('./routes/taskRoutes');
 
+const app = express();
+const port = process.env.PORT || 3000;
 const mongoURI = 'mongodb://127.0.0.1:27017/taskmanager';
 
-
+// Connect to MongoDB
 mongoose
-    .connect(mongoURI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch((err) => {
-        console.error('Error connecting to MongoDB:', err);
-    });
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });
 
-    app.use(cors()); 
+// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
+// Routes
 app.use('/', taskRoutes);
 
+// Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(err.status || 500).json({ error: err.message });
+  console.error(err.stack);
+  res.status(err.status || 500).json({ error: err.message });
 });
 
-const port = process.env.PORT || 3000;
+// Start the server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
