@@ -1,3 +1,7 @@
+// This component is used for editing task details. It allows users to update the title, description,
+//  * due date, and completion status of a task. Users can submit the form to update the task, and
+//  * a success or error message will be displayed using SweetAlert2.
+
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';

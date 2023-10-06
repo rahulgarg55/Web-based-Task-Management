@@ -1,3 +1,16 @@
+/**
+ * TaskForm Component
+ *
+ * This component is used for creating and editing tasks. It provides a form for users to input
+ * task details, including title, description, due date, and completion status. Users can submit
+ * the form to create or update a task.
+ *
+ * @param {Function} onSubmit - A function to handle form submission (create/update task).
+ * @param {Object} task - The task to be edited (optional). If provided, the form will be pre-filled with task details.
+ *
+ * @returns {JSX.Element} The TaskForm component.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';

@@ -1,3 +1,10 @@
+/*
+
+  This is the main file for the Task Manager API built with Express.js and MongoDB.
+  It includes configuration for MongoDB connection, middleware setup, and route handling.
+
+*/
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');

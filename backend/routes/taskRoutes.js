@@ -1,3 +1,17 @@
+/*
+  Task Routes
+
+  This file defines the routes for managing tasks using the Express.js framework.
+  It includes routes for creating, updating, deleting, and fetching tasks.
+
+  Routes:
+  - POST /tasks: Create a new task.
+  - PUT /tasks/:id: Update a task by its ID.
+  - DELETE /tasks/:id: Delete a task by its ID.
+  - GET /tasks/:id: Get a task by its ID.
+  - GET /tasks: Get all tasks.
+
+*/
 const express = require('express');
 const router = express.Router();
 const {

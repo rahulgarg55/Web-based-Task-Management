@@ -1,3 +1,14 @@
+/**
+ * TaskList Component
+ *
+ * This component displays a list of tasks in a table format. Users can view, edit, and delete tasks.
+ *
+ * @param {Array} tasks - An array of tasks to be displayed.
+ * @param {Function} onDelete - A function to handle task deletion.
+ *
+ * @returns {JSX.Element} The TaskList component.
+ */
+
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Paper, Typography, Table, TableHead, TableRow, TableCell, TableBody, Button, useMediaQuery } from '@mui/material';

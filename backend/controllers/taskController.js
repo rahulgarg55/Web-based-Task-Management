@@ -1,3 +1,19 @@
+/*
+  Task Controller
+
+  This file contains controllers for handling tasks, including creation, updating, deletion,
+  retrieval by ID, and retrieval of all tasks. It also includes a utility function for
+  formatting date strings.
+
+  Controllers:
+  - createTask: Create a new task.
+  - updateTaskById: Update a task by its ID.
+  - deleteTaskById: Delete a task by its ID.
+  - getTaskById: Retrieve a task by its ID.
+  - getAllTasks: Retrieve all tasks.
+
+*/
+
 const Task = require('../models/Task');
 const createError = require('http-errors');
 
