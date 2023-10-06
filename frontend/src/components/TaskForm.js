@@ -16,7 +16,6 @@ const TaskForm = ({ onSubmit, task }) => {
     };
   });
 
-  // Update formData if the task prop changes
   useEffect(() => {
     if (task) {
       const initialDueDate = new Date(task.dueDate).toISOString().split('T')[0];

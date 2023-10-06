@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const TaskEdit = ({ task, onUpdate }) => {
   const history = useHistory();
@@ -37,13 +38,23 @@ const TaskEdit = ({ task, onUpdate }) => {
     try {
       if (task && task._id) {
         const taskId = task._id;
-        await onUpdate(taskId, formData);
         history.push('/');
-      } else {
-        console.error('Task ID is missing.');
+        await onUpdate(taskId, formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Task Updated',
+          text: 'The task has been updated successfully.',
+        });
+      
       }
     } catch (error) {
       console.error('Error updating task:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while updating the task.',
+      });
+  
     }
   };
 

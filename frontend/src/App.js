@@ -43,13 +43,13 @@ function App() {
       updatedTask.dueDate = formattedDueDate;
 
       const response = await axios.put(`http://localhost:3000/tasks/${taskId}`, updatedTask);
-
+      console.log('Before setting tasks and history push');
       setTasks((prevTasks) => {
         return prevTasks.map((task) =>
           task._id === response.data._id ? response.data : task
         );
       });
-
+      console.log('After setting tasks and history push');
       setEditingTask(null);
       history.push('/');
     } catch (error) {
