@@ -80,6 +80,8 @@ const TaskForm = ({ onSubmit, task }) => {
             value={formData.title}
             onChange={handleChange}
             required
+            sx={{ marginBottom: '1rem' }}
+
           />
           <TextField
             name="description"
@@ -89,24 +91,34 @@ const TaskForm = ({ onSubmit, task }) => {
             value={formData.description}
             onChange={handleChange}
             required
+            sx={{ marginBottom: '1rem' }}
+
           />
-          <TextField
-            name="dueDate"
-            label="Due Date"
-            fullWidth
-            type="date"
-            value={formData.dueDate}
-            onChange={handleChange}
-            inputProps={{
-              min: new Date().toISOString().split('T')[0], // Set minimum date to today
-            }}
-            required
-          />
+         <TextField
+  name="dueDate"
+  label="Due Date"
+  fullWidth
+  type="date"
+  value={formData.dueDate}
+  onChange={handleChange}
+  inputProps={{
+    min: new Date().toISOString().split('T')[0], // Set minimum date to today
+  }}
+  InputLabelProps={{
+    shrink: true, // This ensures that the label remains visible when a date is selected
+  }}
+  placeholder="" // Set the placeholder to an empty string to remove it
+  required
+  sx={{ marginBottom: '1rem' }}
+
+/>
+
           <FormControlLabel
             control={<Checkbox name="status" checked={formData.status} onChange={handleChange} />}
-            label="Completed"
+            label="Completed"    sx={{ marginLeft: '1rem' }}  
+
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary"> 
             Create
           </Button>
         </form>

@@ -76,6 +76,7 @@ const TaskEdit = ({ task, onUpdate }) => {
             value={formData.title}
             onChange={handleChange}
             required
+            sx={{ marginBottom: '1rem' }}
           />
           <TextField
             name="description"
@@ -85,6 +86,7 @@ const TaskEdit = ({ task, onUpdate }) => {
             value={formData.description}
             onChange={handleChange}
             required
+            sx={{ marginBottom: '1rem' }}
           />
           <TextField
             name="dueDate"
@@ -97,10 +99,12 @@ const TaskEdit = ({ task, onUpdate }) => {
               min: new Date().toISOString().split('T')[0], // Set minimum date to today
             }}
             required
+            sx={{ marginBottom: '1rem' }}
+
           />
           <FormControlLabel
             control={<Checkbox name="status" checked={formData.status} onChange={handleChange} />}
-            label="Completed"
+            label="Completed"  sx={{ marginLeft: '1rem' }}  
           />
           <Button type="submit" variant="contained" color="primary">
             Update
