@@ -1,16 +1,6 @@
 const Task = require('../models/Task');
 const createError = require('http-errors');
 
-// Helper function to format date strings
-// const formatDate = (dateString) => {
-//   try {
-//     const [day, month, year] = dateString.split('-');
-//     return `${day}-${month}-${year}`;
-//   } catch (error) {
-//     console.error('Error formatting date:', error);
-//     return dateString; 
-//   }
-// };
 
 // Create a new task
 const createTask = async (req, res, next) => {
@@ -23,7 +13,6 @@ const createTask = async (req, res, next) => {
     }
 
     const task = await Task.create(req.body);
-    // task.dueDate = formatDate(task.dueDate);
 
     res.status(201).json(task);
   } catch (error) {

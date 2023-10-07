@@ -29,7 +29,7 @@ const TaskEdit = ({ task, onUpdate }) => {
           const month = (backendDate.getMonth() + 1).toString().padStart(2, '0');
           const year = backendDate.getFullYear();
       
-          const formattedDate = `${year}-${month}-${day}`;
+          const formattedDate = `${year}-${day}-${month}`;
       
           setFormData({
             title: taskData.title || '',
@@ -54,10 +54,13 @@ const TaskEdit = ({ task, onUpdate }) => {
 
   const handleUpdate = async () => {
     try {
+
       if (task && task._id) {
         const taskId = task._id;
+        const formattedDueDate = `${formData.dueDate.slice(8, 10)}-${formData.dueDate.slice(5, 7)}-${formData.dueDate.slice(0, 4)}`;
+        const updatedFormData = { ...formData, dueDate: formattedDueDate };  
         history.push('/');
-        await onUpdate(taskId, formData);
+        await onUpdate(taskId, updatedFormData);
 
         Swal.fire({
           icon: 'success',
