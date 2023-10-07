@@ -7,11 +7,11 @@ const TaskForm = ({ onSubmit, task }) => {
 
   // Initialize formData based on whether a task is provided
   const [formData, setFormData] = useState(() => {
-    const initialDueDate = task ? new Date(task.dueDate).toISOString().split('T')[0] : '';
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in "yyyy-mm-dd" format
     return {
       title: task ? task.title : '',
       description: task ? task.description : '',
-      dueDate: initialDueDate,
+      dueDate: task ? task.dueDate : today, // Use today's date if no task is provided
       status: task ? task.status : false,
     };
   });

@@ -2,37 +2,52 @@ import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import axios from 'axios'; // Import Axios
 
 const TaskEdit = ({ task, onUpdate }) => {
   const history = useHistory();
 
-  // Initialize the form data with default values
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     title: '',
     description: '',
     dueDate: new Date().toISOString().split('T')[0],
     status: false,
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
-    // Populate the form data with task details when 'task' prop changes
     if (task) {
-      const backendDate = new Date(task.dueDate);
-      const formattedDate = `${backendDate.getFullYear()}-${(backendDate.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${backendDate.getDate().toString().padStart(2, '0')}`;
+      // Fetch task details from your API when 'task' prop changes
+      const fetchTaskDetails = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/tasks/${task._id}`);
+          const taskData = response.data;
+      
+          const backendDate = new Date(taskData.dueDate);
+          const day = backendDate.getDate().toString().padStart(2, '0');
+          const month = (backendDate.getMonth() + 1).toString().padStart(2, '0');
+          const year = backendDate.getFullYear();
+      
+          const formattedDate = `${year}-${month}-${day}`;
+      
+          setFormData({
+            title: taskData.title || '',
+            description: taskData.description || '',
+            dueDate: formattedDate,
+            status: taskData.status || false,
+          });
+        } catch (error) {
+          console.error('Error fetching task details:', error);
+        }
+      };
+      
 
-      setFormData({
-        title: task.title || '',
-        description: task.description || '',
-        dueDate: formattedDate,
-        status: task.status || false,
-      });
+      fetchTaskDetails();
     }
   }, [task]);
 
   const handleChange = (e) => {
-    // Update the form data based on user input
     const { name, value, type, checked } = e.target;
     setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
@@ -43,8 +58,7 @@ const TaskEdit = ({ task, onUpdate }) => {
         const taskId = task._id;
         history.push('/');
         await onUpdate(taskId, formData);
-        
-        // Display a success message using SweetAlert2
+
         Swal.fire({
           icon: 'success',
           title: 'Task Updated',
@@ -54,7 +68,6 @@ const TaskEdit = ({ task, onUpdate }) => {
     } catch (error) {
       console.error('Error updating task:', error);
 
-      // Display an error message using SweetAlert2
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -70,7 +83,6 @@ const TaskEdit = ({ task, onUpdate }) => {
           Edit Task
         </Typography>
         <form onSubmit={handleUpdate}>
-          {/* Form fields for title, description, due date, and completion status */}
           <TextField
             name="title"
             label="Title"
@@ -98,7 +110,7 @@ const TaskEdit = ({ task, onUpdate }) => {
             value={formData.dueDate}
             onChange={handleChange}
             inputProps={{
-              min: new Date().toISOString().split('T')[0], // Set minimum date to today
+              min: new Date().toISOString().split('T')[0],
             }}
             required
             sx={{ marginBottom: '1rem' }}
@@ -108,7 +120,6 @@ const TaskEdit = ({ task, onUpdate }) => {
             label="Completed"
             sx={{ marginLeft: '1rem' }}
           />
-          {/* Submit button */}
           <Button type="submit" variant="contained" color="primary">
             Update
           </Button>

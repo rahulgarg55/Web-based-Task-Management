@@ -41,24 +41,25 @@ function App() {
   };
 
   // Function to update an existing task
-  const handleUpdateTask = async (taskId, updatedTask) => {
-    try {
-      const formattedDueDate = formatDate(updatedTask.dueDate);
-      updatedTask.dueDate = formattedDueDate;
+  // Function to update an existing task
+const handleUpdateTask = async (taskId, updatedTask) => {
+  try {
+    updatedTask.dueDate = formatDate(updatedTask.dueDate); // Format the dueDate
 
-      const response = await axios.put(`http://localhost:3000/tasks/${taskId}`, updatedTask);
-      
-      // Update the local state with the updated task
-      setTasks((prevTasks) =>
-        prevTasks.map((task) => (task._id === response.data._id ? response.data : task))
-      );
+    const response = await axios.put(`http://localhost:3000/tasks/${taskId}`, updatedTask);
 
-      setEditingTask(null);
-      history.push('/');
-    } catch (error) {
-      console.error('Error updating task:', error);
-    }
-  };
+    // Update the local state with the updated task
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task._id === response.data._id ? response.data : task))
+    );
+
+    setEditingTask(null);
+    history.push('/');
+  } catch (error) {
+    console.error('Error updating task:', error);
+  }
+};
+
 
   // Function to delete a task
   const handleDeleteTask = async (taskId) => {
