@@ -33,11 +33,11 @@ router.use((err, req, res, next) => {
 });
 
 // routes
-router.post('/tasks', createTask);
-router.put('/tasks/:id', updateTaskById);
-router.delete('/tasks/:id', deleteTaskById);
-router.get('/tasks/:id', getTaskById);
-router.get('/tasks', getAllTasks);
+router.post('/tasks', createTask)
+.put('/tasks/:id', updateTaskById)
+.delete('/tasks/:id', deleteTaskById)
+.get('/tasks/:id', getTaskById)
+.get('/tasks', getAllTasks);
 
 module.exports = router;
 
